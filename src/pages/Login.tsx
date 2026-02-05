@@ -1,5 +1,5 @@
  import { useState } from "react";
- import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
  import Header from "@/components/layout/Header";
  import Footer from "@/components/layout/Footer";
  import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@
  
  const Login = () => {
    const { toast } = useToast();
+  const navigate = useNavigate();
    const [isLogin, setIsLogin] = useState(true);
    const [showPassword, setShowPassword] = useState(false);
    const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,6 +29,9 @@
          ? "You've successfully logged in." 
          : "Your account has been created. You can now submit requests!",
      });
+    
+    // Redirect to services page after successful login/signup
+    navigate("/services");
    };
  
    return (
