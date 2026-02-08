@@ -7,7 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const { user, signOut } = useAuth();
+  const { user, isAdmin, signOut } = useAuth();
 
   const navLinks = [
     { href: "/", label: "Home" },
@@ -18,6 +18,9 @@ const Header = () => {
 
   if (user) {
     navLinks.push({ href: "/dashboard", label: "My Requests" });
+    if (isAdmin) {
+      navLinks.push({ href: "/admin", label: "Admin" });
+    }
   }
 
   const isActive = (path: string) => location.pathname === path;
