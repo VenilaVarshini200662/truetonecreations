@@ -132,9 +132,9 @@
                      </ul>
  
                      {/* CTA */}
-                     <Link to="/login">
-                       <Button variant="hero" size="lg" className="group">
-                         Request This Service
+                      <Link to="/submit-request">
+                        <Button variant="hero" size="lg" className="group">
+                          Request This Service
                          <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                        </Button>
                      </Link>
@@ -183,9 +183,9 @@
                <p className="text-lg opacity-80 mb-8">
                  Sign up now and submit your first project. It's completely free!
                </p>
-               <Link to="/login">
-                 <Button variant="hero" size="xl" className="group">
-                   Get Started Free
+                <Link to="/submit-request">
+                  <Button variant="hero" size="xl" className="group">
+                    Get Started Free
                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                  </Button>
                </Link>
