@@ -118,9 +118,18 @@ const Dashboard = () => {
                             </div>
                           )}
                           {req.delivery_url && (
-                            <a href={req.delivery_url} target="_blank" rel="noopener noreferrer">
-                              <Button variant="hero" size="sm">Download Delivery</Button>
-                            </a>
+                            <Button
+                              variant="hero"
+                              size="sm"
+                              onClick={async () => {
+                                const { data } = await supabase.storage
+                                  .from("deliverables")
+                                  .createSignedUrl(req.delivery_url!, 3600);
+                                if (data?.signedUrl) window.open(data.signedUrl, "_blank");
+                              }}
+                            >
+                              Download Delivery
+                            </Button>
                           )}
                         </div>
                       </div>
