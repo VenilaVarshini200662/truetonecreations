@@ -135,13 +135,10 @@ const AdminDashboard = () => {
       return;
     }
 
-    const { data: urlData } = supabase.storage
-      .from("deliverables")
-      .getPublicUrl(filePath);
-
+    // Store the file path (not a public URL) so we can generate signed URLs on demand
     const { error: updateError } = await supabase
       .from("service_requests")
-      .update({ delivery_url: urlData.publicUrl, status: "delivered" as RequestStatus })
+      .update({ delivery_url: filePath, status: "delivered" as RequestStatus })
       .eq("id", selectedRequest.id);
 
     setUploading(false);
@@ -294,10 +291,18 @@ const AdminDashboard = () => {
                       />
                       {uploading && <p className="text-xs text-muted-foreground">Uploading...</p>}
                       {selectedRequest.delivery_url && (
-                        <a href={selectedRequest.delivery_url} target="_blank" rel="noopener noreferrer"
-                          className="text-xs text-primary underline">
+                        <button
+                          type="button"
+                          className="text-xs text-primary underline cursor-pointer"
+                          onClick={async () => {
+                            const { data } = await supabase.storage
+                              .from("deliverables")
+                              .createSignedUrl(selectedRequest.delivery_url!, 3600);
+                            if (data?.signedUrl) window.open(data.signedUrl, "_blank");
+                          }}
+                        >
                           Current delivery file
-                        </a>
+                        </button>
                       )}
                     </div>
 
