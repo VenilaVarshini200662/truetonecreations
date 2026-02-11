@@ -125,10 +125,21 @@ const Dashboard = () => {
                               variant="hero"
                               size="sm"
                               onClick={async () => {
-                                const { data } = await supabase.storage
+                                const { data, error } = await supabase.storage
                                   .from("deliverables")
-                                  .createSignedUrl(req.delivery_url!, 3600);
-                                if (data?.signedUrl) window.open(data.signedUrl, "_blank");
+                                  .createSignedUrl(req.delivery_url!, 3600, { download: true });
+                                if (error) {
+                                  console.error("Download error:", error);
+                                  return;
+                                }
+                                if (data?.signedUrl) {
+                                  const link = document.createElement("a");
+                                  link.href = data.signedUrl;
+                                  link.download = req.delivery_url!.split("/").pop() || "delivery";
+                                  document.body.appendChild(link);
+                                  link.click();
+                                  document.body.removeChild(link);
+                                }
                               }}
                             >
                               Download Delivery
