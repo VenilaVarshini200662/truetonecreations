@@ -39,17 +39,20 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) return;
-    const fetchRequests = async () => {
-      const { data } = await supabase
-        .from("service_requests")
-        .select("*")
-        .eq("client_id", user.id)
-        .order("created_at", { ascending: false });
-      setRequests(data ?? []);
+    if (!user) {
       setLoading(false);
-    };
-    fetchRequests();
+      return;
+    }
+    setLoading(true);
+    supabase
+      .from("service_requests")
+      .select("*")
+      .eq("client_id", user.id)
+      .order("created_at", { ascending: false })
+      .then(({ data }) => {
+        setRequests(data ?? []);
+        setLoading(false);
+      });
   }, [user]);
 
   return (
