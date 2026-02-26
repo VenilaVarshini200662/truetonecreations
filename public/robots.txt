@@ -1,14 +1,10 @@
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
+# Allow all robots full access
 User-agent: *
 Allow: /
+
+# If you want to block some paths, e.g. admin pages
+# Disallow: /admin/
+# Disallow: /private/
+
+# Your sitemap location (recommended)
+Sitemap: https://truetonecreations.vercel.app/sitemap.xml
