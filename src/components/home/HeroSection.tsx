@@ -13,12 +13,12 @@
        <div className="container mx-auto px-4 relative z-10">
          <div className="max-w-4xl mx-auto text-center">
            {/* Badge */}
-           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary border border-border mb-8 animate-fade-in">
-             <Sparkles className="w-4 h-4 text-accent" />
-             <span className="text-sm font-medium text-secondary-foreground">
-               100% Human-Crafted • AI-Free Services
-             </span>
-           </div>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary border border-border mb-8 animate-fade-in">
+              <Sparkles className="w-4 h-4 text-accent" />
+              <span className="text-sm font-medium text-secondary-foreground">
+                Human-Crafted • AI-Free Services
+              </span>
+            </div>
  
            {/* Main Heading */}
            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground leading-tight mb-6 animate-slide-up">
@@ -49,15 +49,15 @@
  
            {/* Trust Indicators */}
            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto animate-slide-up" style={{ animationDelay: "0.3s" }}>
-             <div className="flex items-center justify-center gap-3 p-4 rounded-xl bg-card shadow-soft">
-               <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center">
-                 <Sparkles className="w-6 h-6 text-primary" />
-               </div>
-               <div className="text-left">
-                 <p className="font-semibold text-foreground">100% Free</p>
-                 <p className="text-sm text-muted-foreground">No hidden costs</p>
-               </div>
-             </div>
+              <div className="flex items-center justify-center gap-3 p-4 rounded-xl bg-card shadow-soft">
+                <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center">
+                  <Sparkles className="w-6 h-6 text-primary" />
+                </div>
+                <div className="text-left">
+                  <p className="font-semibold text-foreground">First Trial Free</p>
+                  <p className="text-sm text-muted-foreground">Try before you pay</p>
+                </div>
+              </div>
              
              <div className="flex items-center justify-center gap-3 p-4 rounded-xl bg-card shadow-soft">
                <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center">

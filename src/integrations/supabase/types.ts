@@ -87,6 +87,7 @@ export type Database = {
           delivery_url: string | null
           description: string
           id: string
+          payment_status: string
           service_type: Database["public"]["Enums"]["service_type"]
           status: Database["public"]["Enums"]["request_status"]
           title: string
@@ -99,6 +100,7 @@ export type Database = {
           delivery_url?: string | null
           description: string
           id?: string
+          payment_status?: string
           service_type: Database["public"]["Enums"]["service_type"]
           status?: Database["public"]["Enums"]["request_status"]
           title: string
@@ -111,6 +113,7 @@ export type Database = {
           delivery_url?: string | null
           description?: string
           id?: string
+          payment_status?: string
           service_type?: Database["public"]["Enums"]["service_type"]
           status?: Database["public"]["Enums"]["request_status"]
           title?: string

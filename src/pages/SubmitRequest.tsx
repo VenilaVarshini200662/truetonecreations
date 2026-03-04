@@ -143,8 +143,8 @@ const SubmitRequest = () => {
 
               <div className="mt-6 p-4 rounded-xl bg-secondary/50 text-center">
                 <p className="text-sm text-muted-foreground">
-                  🌿 This is <strong className="text-foreground">100% free</strong> with unlimited revisions. 
-                  Your request will be personally handled — no AI shortcuts.
+                  🌿 Your request will be personally handled with <strong className="text-foreground">unlimited revisions</strong> — no AI shortcuts. 
+                  Download available after payment confirmation.
                 </p>
               </div>
             </div>

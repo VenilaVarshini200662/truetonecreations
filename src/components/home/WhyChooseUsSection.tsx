@@ -1,11 +1,11 @@
  import { Shield, RefreshCw, MessageCircle, Zap, Heart, Globe } from "lucide-react";
  
  const reasons = [
-   {
-     icon: Shield,
-     title: "100% Free Service",
-     description: "All our creative services are completely free. No hidden charges, no premium tiers—just quality work delivered to you.",
-   },
+    {
+      icon: Shield,
+      title: "Affordable Pricing",
+      description: "Starting at just ₹100 for standard content. Your first project is completely free — no commitment needed.",
+    },
    {
      icon: Heart,
      title: "Human-Crafted Quality",
