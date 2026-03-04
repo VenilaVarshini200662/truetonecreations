@@ -161,10 +161,10 @@
                          ))}
                        </div>
  
-                       <div className="mt-8 p-4 rounded-xl bg-primary text-primary-foreground text-center">
-                         <p className="text-2xl font-serif font-bold">100% FREE</p>
-                         <p className="text-sm opacity-80">No hidden charges</p>
-                       </div>
+                        <div className="mt-8 p-4 rounded-xl bg-primary text-primary-foreground text-center">
+                          <p className="text-2xl font-serif font-bold">From ₹100</p>
+                          <p className="text-sm opacity-80">First project free</p>
+                        </div>
                      </div>
                    </div>
                  </div>
@@ -180,12 +180,12 @@
                <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">
                  Ready to Get Started?
                </h2>
-               <p className="text-lg opacity-80 mb-8">
-                 Sign up now and submit your first project. It's completely free!
-               </p>
-                <Link to="/submit-request">
-                  <Button variant="hero" size="xl" className="group">
-                    Get Started Free
+                <p className="text-lg opacity-80 mb-8">
+                  Sign up now and submit your first project — your first trial is free!
+                </p>
+                 <Link to="/pricing">
+                   <Button variant="hero" size="xl" className="group">
+                     View Pricing Plans
                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                  </Button>
                </Link>

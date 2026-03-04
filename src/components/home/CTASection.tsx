@@ -20,18 +20,23 @@
              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
                Transform Your Vision Into Reality
              </h2>
-             <p className="text-muted-foreground text-lg max-w-2xl mx-auto mb-8">
-               Join others who trust TrueTone Creations for human-crafted, AI-free creative services. 
-               It's completely free—start your project today!
-             </p>
- 
-             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-               <Link to="/login">
-                 <Button variant="hero" size="xl" className="group">
-                   Get Started Free
-                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                 </Button>
-               </Link>
+              <p className="text-muted-foreground text-lg max-w-2xl mx-auto mb-8">
+                Join others who trust TrueTone Creations for human-crafted, AI-free creative services. 
+                Your first project is on us — try it today!
+              </p>
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Link to="/login">
+                  <Button variant="hero" size="xl" className="group">
+                    Start Your Free Trial
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+                <Link to="/pricing">
+                  <Button variant="outline" size="xl">
+                    View Pricing
+                  </Button>
+                </Link>
                <Link to="/services">
                  <Button variant="outline" size="xl">
                    Explore Services

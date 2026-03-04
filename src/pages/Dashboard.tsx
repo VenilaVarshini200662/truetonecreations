@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { Plus, Clock, CheckCircle, AlertCircle, Truck, RefreshCw } from "lucide-react";
+import { Plus, Clock, CheckCircle, AlertCircle, Truck, RefreshCw, Lock } from "lucide-react";
 
 type ServiceRequest = {
   id: string;
@@ -16,6 +16,7 @@ type ServiceRequest = {
   status: string;
   admin_reply: string | null;
   delivery_url: string | null;
+  payment_status: string;
   created_at: string;
 };
 
@@ -120,31 +121,43 @@ const Dashboard = () => {
                               <p className="text-foreground">{req.admin_reply}</p>
                             </div>
                           )}
-                          {req.delivery_url && (
-                            <Button
-                              variant="hero"
-                              size="sm"
-                              onClick={async () => {
-                                const { data, error } = await supabase.storage
-                                  .from("deliverables")
-                                  .createSignedUrl(req.delivery_url!, 3600, { download: true });
-                                if (error) {
-                                  console.error("Download error:", error);
-                                  return;
-                                }
-                                if (data?.signedUrl) {
-                                  const link = document.createElement("a");
-                                  link.href = data.signedUrl;
-                                  link.download = req.delivery_url!.split("/").pop() || "delivery";
-                                  document.body.appendChild(link);
-                                  link.click();
-                                  document.body.removeChild(link);
-                                }
-                              }}
-                            >
-                              Download Delivery
-                            </Button>
-                          )}
+                          {req.delivery_url && req.payment_status === 'paid' || req.payment_status === 'free_trial' ? (
+                            req.delivery_url && (
+                              <Button
+                                variant="hero"
+                                size="sm"
+                                onClick={async () => {
+                                  const { data, error } = await supabase.storage
+                                    .from("deliverables")
+                                    .createSignedUrl(req.delivery_url!, 3600, { download: true });
+                                  if (error) {
+                                    console.error("Download error:", error);
+                                    return;
+                                  }
+                                  if (data?.signedUrl) {
+                                    const link = document.createElement("a");
+                                    link.href = data.signedUrl;
+                                    link.download = req.delivery_url!.split("/").pop() || "delivery";
+                                    document.body.appendChild(link);
+                                    link.click();
+                                    document.body.removeChild(link);
+                                  }
+                                }}
+                              >
+                                Download Delivery
+                              </Button>
+                            )
+                          ) : req.delivery_url && req.payment_status === 'pending' ? (
+                            <div className="flex flex-col items-end gap-2">
+                              <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-accent/10 text-sm">
+                                <Lock className="w-4 h-4 text-accent" />
+                                <span className="text-accent-foreground font-medium">Payment required to download</span>
+                              </div>
+                              <p className="text-xs text-muted-foreground">
+                                Complete payment via GPay, PayPal, Paytm or UPI to unlock
+                              </p>
+                            </div>
+                          ) : null}
                         </div>
                       </div>
                     </div>
