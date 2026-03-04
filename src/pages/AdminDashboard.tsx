@@ -119,12 +119,33 @@ const AdminDashboard = () => {
     fetchRequests();
   };
 
+  const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
+  const ALLOWED_TYPES = [
+    'image/jpeg', 'image/png', 'image/gif', 'image/webp',
+    'video/mp4', 'video/quicktime',
+    'application/pdf',
+    'application/zip', 'application/x-zip-compressed',
+    'text/plain',
+  ];
+
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!selectedRequest || !e.target.files?.[0]) return;
     const file = e.target.files[0];
+
+    if (file.size > MAX_FILE_SIZE) {
+      toast({ title: "File Too Large", description: "Maximum file size is 50 MB.", variant: "destructive" });
+      return;
+    }
+
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      toast({ title: "Invalid File Type", description: "Only images, videos, PDFs, ZIP archives, and text files are allowed.", variant: "destructive" });
+      return;
+    }
+
     setUploading(true);
 
-    const filePath = `${selectedRequest.client_id}/${selectedRequest.id}/${file.name}`;
+    const sanitizedName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const filePath = `${selectedRequest.client_id}/${selectedRequest.id}/${sanitizedName}`;
     const { error: uploadError } = await supabase.storage
       .from("deliverables")
       .upload(filePath, file, { upsert: true });
@@ -285,6 +306,7 @@ const AdminDashboard = () => {
                       </Label>
                       <Input
                         type="file"
+                        accept="image/*,video/*,.pdf,.zip,.txt"
                         onChange={handleFileUpload}
                         disabled={uploading}
                         className="bg-card"
