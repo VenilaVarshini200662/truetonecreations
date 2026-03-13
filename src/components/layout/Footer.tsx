@@ -100,8 +100,23 @@
            </div>
          </div>
  
-         {/* Bottom Bar */}
-         <div className="mt-12 pt-8 border-t border-primary-foreground/20">
+          {/* Subscribe CTA in Footer */}
+          <div className="mt-12 pt-8 border-t border-primary-foreground/20">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
+              <div>
+                <p className="font-serif text-lg font-semibold">Subscribe for 10% Off</p>
+                <p className="text-sm opacity-80">Get exclusive updates, offers & newsletters in your inbox.</p>
+              </div>
+              <Link to="/#subscribe">
+                <button className="px-6 py-2.5 rounded-lg bg-accent text-accent-foreground font-medium text-sm hover:opacity-90 transition-opacity">
+                  Subscribe Now
+                </button>
+              </Link>
+            </div>
+          </div>
+
+          {/* Bottom Bar */}
+          <div className="pt-6 border-t border-primary-foreground/20">
            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
              <p className="text-sm opacity-80 flex items-center gap-1">
                Made with <Heart className="w-4 h-4 text-accent fill-accent" /> by TrueTone Creations
