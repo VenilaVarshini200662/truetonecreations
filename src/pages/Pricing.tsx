@@ -275,6 +275,27 @@ const Pricing = () => {
           </div>
         </section>
 
+        {/* Subscriber Discount Banner */}
+        <section className="py-12 md:py-16">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto p-8 rounded-2xl bg-gradient-to-r from-accent/20 via-secondary/50 to-accent/20 border-2 border-accent/30 text-center">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/30 text-accent-foreground mb-4">
+                <Sparkles className="w-4 h-4" />
+                <span className="text-sm font-bold">Subscriber Exclusive</span>
+              </div>
+              <h3 className="font-serif text-2xl md:text-3xl font-bold text-foreground mb-3">
+                Subscribe & Get 10% Off Every Project!
+              </h3>
+              <p className="text-muted-foreground text-lg mb-2">
+                Subscribers receive exclusive offers, newsletters, and new updates via email — before anyone else.
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Scroll down to subscribe, or visit our homepage to join the list.
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* Payment Info */}
         <section className="py-16 md:py-24">
           <div className="container mx-auto px-4">
