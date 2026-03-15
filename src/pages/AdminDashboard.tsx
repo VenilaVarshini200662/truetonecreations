@@ -270,6 +270,15 @@ const AdminDashboard = () => {
                       <p className="text-foreground font-medium">{selectedRequest.title}</p>
                     </div>
                     <div>
+                      <p className="text-sm font-medium text-muted-foreground mb-1">Client</p>
+                      <p className="text-foreground text-sm">
+                        {selectedRequest.profiles?.full_name ?? "Unknown"}
+                        {selectedRequest.profiles?.email && (
+                          <span className="ml-2 text-muted-foreground">({selectedRequest.profiles.email})</span>
+                        )}
+                      </p>
+                    </div>
+                    <div>
                       <p className="text-sm font-medium text-muted-foreground mb-1">Description</p>
                       <p className="text-foreground text-sm">{selectedRequest.description}</p>
                     </div>
