@@ -276,6 +276,56 @@ const AdminDashboard = () => {
                       <Badge variant="secondary">{serviceLabels[selectedRequest.service_type] ?? selectedRequest.service_type}</Badge>
                     </div>
 
+                    {/* Client Attachments */}
+                    {selectedRequest.attachments && selectedRequest.attachments.length > 0 && (
+                      <div className="space-y-2">
+                        <Label className="flex items-center gap-2">
+                          <Eye className="w-4 h-4" /> Client Reference Files ({selectedRequest.attachments.length})
+                        </Label>
+                        <div className="grid grid-cols-2 gap-2">
+                          {selectedRequest.attachments.map((path, idx) => {
+                            const fileName = path.split("/").pop() ?? `File ${idx + 1}`;
+                            const isImage = /\.(jpe?g|png|gif|webp)$/i.test(fileName);
+                            return (
+                              <button
+                                key={idx}
+                                type="button"
+                                className="flex items-center gap-2 p-2 rounded-lg border border-border bg-card hover:bg-accent/50 transition-colors text-left text-xs"
+                                onClick={async () => {
+                                  const { data } = await supabase.storage
+                                    .from("request-attachments")
+                                    .createSignedUrl(path, 3600);
+                                  if (data?.signedUrl) window.open(data.signedUrl, "_blank");
+                                }}
+                              >
+                                {isImage ? (
+                                  <img
+                                    src=""
+                                    alt=""
+                                    className="w-10 h-10 rounded object-cover bg-muted"
+                                    ref={(el) => {
+                                      if (!el) return;
+                                      supabase.storage
+                                        .from("request-attachments")
+                                        .createSignedUrl(path, 300)
+                                        .then(({ data }) => {
+                                          if (data?.signedUrl) el.src = data.signedUrl;
+                                        });
+                                    }}
+                                  />
+                                ) : (
+                                  <div className="w-10 h-10 rounded bg-muted flex items-center justify-center text-muted-foreground text-[10px] font-bold">
+                                    {fileName.split(".").pop()?.toUpperCase()}
+                                  </div>
+                                )}
+                                <span className="truncate text-foreground">{fileName}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
                     <div className="space-y-2">
                       <Label>Update Status</Label>
                       <Select value={newStatus} onValueChange={(v) => setNewStatus(v as RequestStatus)}>
