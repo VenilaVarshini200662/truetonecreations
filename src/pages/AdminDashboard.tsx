@@ -27,6 +27,7 @@ type ServiceRequest = {
   status: RequestStatus;
   admin_reply: string | null;
   delivery_url: string | null;
+  attachments: string[] | null;
   created_at: string;
   client_id: string;
   profiles?: { full_name: string; email: string } | null;
