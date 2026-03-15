@@ -241,8 +241,9 @@ const AdminDashboard = () => {
                           </div>
                           <h3 className="font-serif text-lg font-bold text-foreground">{req.title}</h3>
                           <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{req.description}</p>
-                          <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
-                            <span>Client: {req.profiles?.full_name ?? req.profiles?.email ?? req.client_id.slice(0, 8)}</span>
+                          <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground flex-wrap">
+                            <span>Client: {req.profiles?.full_name ?? req.client_id.slice(0, 8)}</span>
+                            {req.profiles?.email && <span>Email: {req.profiles.email}</span>}
                             <span>Submitted: {new Date(req.created_at).toLocaleDateString()}</span>
                           </div>
                         </div>
@@ -258,15 +259,24 @@ const AdminDashboard = () => {
 
             {/* Manage Request Dialog */}
             <Dialog open={!!selectedRequest} onOpenChange={(open) => !open && setSelectedRequest(null)}>
-              <DialogContent className="max-w-lg">
+              <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle className="font-serif">Manage Request</DialogTitle>
                 </DialogHeader>
                 {selectedRequest && (
-                  <div className="space-y-5">
+                  <div className="space-y-5 pb-2">
                     <div>
                       <p className="text-sm font-medium text-muted-foreground mb-1">Title</p>
                       <p className="text-foreground font-medium">{selectedRequest.title}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground mb-1">Client</p>
+                      <p className="text-foreground text-sm">
+                        {selectedRequest.profiles?.full_name ?? "Unknown"}
+                        {selectedRequest.profiles?.email && (
+                          <span className="ml-2 text-muted-foreground">({selectedRequest.profiles.email})</span>
+                        )}
+                      </p>
                     </div>
                     <div>
                       <p className="text-sm font-medium text-muted-foreground mb-1">Description</p>
