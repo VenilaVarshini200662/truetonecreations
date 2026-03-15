@@ -82,6 +82,7 @@ export type Database = {
       service_requests: {
         Row: {
           admin_reply: string | null
+          attachments: string[] | null
           client_id: string
           created_at: string
           delivery_url: string | null
@@ -95,6 +96,7 @@ export type Database = {
         }
         Insert: {
           admin_reply?: string | null
+          attachments?: string[] | null
           client_id: string
           created_at?: string
           delivery_url?: string | null
@@ -108,6 +110,7 @@ export type Database = {
         }
         Update: {
           admin_reply?: string | null
+          attachments?: string[] | null
           client_id?: string
           created_at?: string
           delivery_url?: string | null
