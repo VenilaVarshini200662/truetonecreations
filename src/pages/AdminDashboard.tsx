@@ -241,8 +241,9 @@ const AdminDashboard = () => {
                           </div>
                           <h3 className="font-serif text-lg font-bold text-foreground">{req.title}</h3>
                           <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{req.description}</p>
-                          <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
-                            <span>Client: {req.profiles?.full_name ?? req.profiles?.email ?? req.client_id.slice(0, 8)}</span>
+                          <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground flex-wrap">
+                            <span>Client: {req.profiles?.full_name ?? req.client_id.slice(0, 8)}</span>
+                            {req.profiles?.email && <span>Email: {req.profiles.email}</span>}
                             <span>Submitted: {new Date(req.created_at).toLocaleDateString()}</span>
                           </div>
                         </div>
