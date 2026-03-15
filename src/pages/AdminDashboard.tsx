@@ -259,12 +259,12 @@ const AdminDashboard = () => {
 
             {/* Manage Request Dialog */}
             <Dialog open={!!selectedRequest} onOpenChange={(open) => !open && setSelectedRequest(null)}>
-              <DialogContent className="max-w-lg">
+              <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle className="font-serif">Manage Request</DialogTitle>
                 </DialogHeader>
                 {selectedRequest && (
-                  <div className="space-y-5">
+                  <div className="space-y-5 pb-2">
                     <div>
                       <p className="text-sm font-medium text-muted-foreground mb-1">Title</p>
                       <p className="text-foreground font-medium">{selectedRequest.title}</p>
