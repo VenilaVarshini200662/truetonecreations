@@ -31,12 +31,11 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-full bg-gradient-forest flex items-center justify-center shadow-soft group-hover:shadow-elevated transition-all duration-300">
-              <Palette className="w-5 h-5 text-primary-foreground" />
-            </div>
             <div className="flex flex-col">
-              <span className="font-serif text-lg md:text-xl font-bold text-primary leading-tight">TrueTone</span>
-              <span className="text-xs text-muted-foreground -mt-1">Creations</span>
+              <span className="font-serif text-xl md:text-2xl font-bold text-primary leading-tight tracking-tight group-hover:text-accent transition-colors duration-300">
+                <span className="text-accent">T</span>rue<span className="text-accent">T</span>one
+              </span>
+              <span className="text-[10px] md:text-xs text-muted-foreground uppercase tracking-[0.2em] font-medium -mt-0.5">Creations</span>
             </div>
           </Link>
 
