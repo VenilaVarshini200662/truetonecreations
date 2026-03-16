@@ -66,7 +66,7 @@ const Login = () => {
             <div className="text-center mb-8">
               <Link to="/" className="inline-flex items-center gap-2 mb-4">
                 <div className="w-12 h-12 rounded-full bg-gradient-forest flex items-center justify-center shadow-soft">
-                  <Leaf className="w-6 h-6 text-primary-foreground" />
+                  <Sparkles className="w-6 h-6 text-primary-foreground" />
                 </div>
               </Link>
               <h1 className="font-serif text-3xl font-bold text-foreground mb-2">
