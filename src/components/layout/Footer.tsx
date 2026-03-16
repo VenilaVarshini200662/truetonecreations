@@ -9,8 +9,8 @@ import { PenTool, Mail, Phone, MapPin, Heart } from "lucide-react";
            {/* Brand */}
            <div className="lg:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center">
-                <Pen className="w-5 h-5 text-accent-foreground" />
+<div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center">
+                <PenTool className="w-5 h-5 text-accent-foreground" />
               </div>
               <div className="flex flex-col">
                 <span className="font-serif text-xl font-bold leading-tight">
