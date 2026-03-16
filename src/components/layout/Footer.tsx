@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Mail, Phone, MapPin, Heart } from "lucide-react";
+import { Pen, Mail, Phone, MapPin, Heart } from "lucide-react";
  
  const Footer = () => {
    return (
@@ -9,11 +9,14 @@ import { Mail, Phone, MapPin, Heart } from "lucide-react";
            {/* Brand */}
            <div className="lg:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-4">
+              <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center">
+                <Pen className="w-5 h-5 text-accent-foreground" />
+              </div>
               <div className="flex flex-col">
-                <span className="font-serif text-xl font-bold leading-tight tracking-tight">
-                  <span className="text-accent">T</span>rue<span className="text-accent">T</span>one
+                <span className="font-serif text-xl font-bold leading-tight">
+                  TrueTone
                 </span>
-                <span className="text-[10px] text-primary-foreground/80 uppercase tracking-[0.2em] font-medium -mt-0.5">Creations</span>
+                <span className="text-xs opacity-80 -mt-1">Creations</span>
               </div>
             </Link>
              <p className="text-sm opacity-80 leading-relaxed">
