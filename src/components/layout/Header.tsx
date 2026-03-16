@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Sparkles, LogOut } from "lucide-react";
+import { Menu, X, Pen, LogOut } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
 const Header = () => {
@@ -32,7 +32,7 @@ const Header = () => {
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link to="/" className="flex items-center gap-2 group">
             <div className="w-10 h-10 rounded-full bg-gradient-forest flex items-center justify-center shadow-soft group-hover:shadow-elevated transition-all duration-300">
-              <Sparkles className="w-5 h-5 text-primary-foreground" />
+              <Pen className="w-5 h-5 text-primary-foreground" />
             </div>
             <div className="flex flex-col">
               <span className="font-serif text-lg md:text-xl font-bold text-primary leading-tight">TrueTone</span>

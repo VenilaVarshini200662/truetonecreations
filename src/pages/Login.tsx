@@ -5,7 +5,7 @@ import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Sparkles, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { Pen, ArrowRight, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -66,7 +66,7 @@ const Login = () => {
             <div className="text-center mb-8">
               <Link to="/" className="inline-flex items-center gap-2 mb-4">
                 <div className="w-12 h-12 rounded-full bg-gradient-forest flex items-center justify-center shadow-soft">
-                  <Sparkles className="w-6 h-6 text-primary-foreground" />
+                  <Pen className="w-6 h-6 text-primary-foreground" />
                 </div>
               </Link>
               <h1 className="font-serif text-3xl font-bold text-foreground mb-2">
