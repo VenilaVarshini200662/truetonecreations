@@ -5,7 +5,7 @@ import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Pen, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { ArrowRight, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -64,9 +64,12 @@ const Login = () => {
         <div className="container mx-auto px-4 py-16">
           <div className="max-w-md mx-auto">
             <div className="text-center mb-8">
-              <Link to="/" className="inline-flex items-center gap-2 mb-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-forest flex items-center justify-center shadow-soft">
-                  <Pen className="w-6 h-6 text-primary-foreground" />
+              <Link to="/" className="inline-block mb-4">
+                <div className="flex flex-col items-center">
+                  <span className="font-serif text-3xl font-bold leading-tight tracking-tight hover:text-accent transition-colors duration-300">
+                    <span className="text-accent">T</span>rue<span className="text-accent">T</span>one
+                  </span>
+                  <span className="text-xs text-muted-foreground uppercase tracking-[0.3em] font-medium -mt-0.5">Creations</span>
                 </div>
               </Link>
               <h1 className="font-serif text-3xl font-bold text-foreground mb-2">
