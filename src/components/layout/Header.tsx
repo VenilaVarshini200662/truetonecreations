@@ -30,9 +30,9 @@ const Header = () => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
-<Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-forest flex items-center justify-center shadow-soft group-hover:shadow-elevated transition-all duration-300 ring-2 ring-white/20">
-              <Pen className="w-5 h-5 text-primary-foreground transform -rotate-45" strokeWidth={2.5} />
+          <Link to="/" className="flex items-center gap-2 group">
+            <div className="w-10 h-10 rounded-full bg-gradient-forest flex items-center justify-center shadow-soft group-hover:shadow-elevated transition-all duration-300">
+              <Pen className="w-5 h-5 text-primary-foreground" />
             </div>
             <div className="flex flex-col">
               <span className="font-serif text-lg md:text-xl font-bold text-primary leading-tight">TrueTone</span>

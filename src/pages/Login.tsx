@@ -64,9 +64,9 @@ const Login = () => {
         <div className="container mx-auto px-4 py-16">
           <div className="max-w-md mx-auto">
             <div className="text-center mb-8">
-<Link to="/" className="inline-flex items-center gap-2 mb-4">
-                <div className="w-12 h-12 rounded-xl bg-gradient-forest flex items-center justify-center shadow-soft ring-2 ring-white/20">
-                  <Pen className="w-6 h-6 text-primary-foreground transform -rotate-45" strokeWidth={2.5} />
+              <Link to="/" className="inline-flex items-center gap-2 mb-4">
+                <div className="w-12 h-12 rounded-full bg-gradient-forest flex items-center justify-center shadow-soft">
+                  <Pen className="w-6 h-6 text-primary-foreground" />
                 </div>
               </Link>
               <h1 className="font-serif text-3xl font-bold text-foreground mb-2">
