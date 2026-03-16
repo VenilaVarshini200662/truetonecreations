@@ -1,5 +1,5 @@
- import { Link } from "react-router-dom";
- import { Leaf, Mail, Phone, MapPin, Heart } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Sparkles, Mail, Phone, MapPin, Heart } from "lucide-react";
  
  const Footer = () => {
    return (
