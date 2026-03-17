@@ -170,6 +170,22 @@ const AdminDashboard = () => {
     }
 
     toast({ title: "Delivered!", description: "File uploaded and request marked as delivered." });
+
+    // Send delivery notification email
+    try {
+      const { error: emailError } = await supabase.functions.invoke("send-delivery-email", {
+        body: { requestId: selectedRequest.id, deliveryFilePath: filePath },
+      });
+      if (emailError) {
+        console.error("Email error:", emailError);
+        toast({ title: "Note", description: "Delivered but email notification failed.", variant: "destructive" });
+      } else {
+        toast({ title: "Email Sent!", description: "Client has been notified via email." });
+      }
+    } catch (emailErr) {
+      console.error("Email send error:", emailErr);
+    }
+
     setSelectedRequest(null);
     fetchRequests();
   };
