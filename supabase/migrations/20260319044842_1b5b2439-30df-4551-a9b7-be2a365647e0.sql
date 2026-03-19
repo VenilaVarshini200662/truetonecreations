@@ -1,0 +1,1 @@
+ALTER TABLE public.service_requests ADD COLUMN price NUMERIC DEFAULT NULL;

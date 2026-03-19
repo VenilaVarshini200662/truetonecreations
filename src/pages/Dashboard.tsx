@@ -17,6 +17,7 @@ type ServiceRequest = {
   admin_reply: string | null;
   delivery_url: string | null;
   payment_status: string;
+  price: number | null;
   created_at: string;
 };
 
@@ -153,6 +154,11 @@ const Dashboard = () => {
                                 <Lock className="w-4 h-4 text-accent" />
                                 <span className="text-accent-foreground font-medium">Payment required to download</span>
                               </div>
+                              {req.price != null && (
+                                <p className="text-sm font-semibold text-foreground">
+                                  Amount: ₹{req.price}
+                                </p>
+                              )}
                               <p className="text-xs text-muted-foreground">
                                 Complete payment via GPay, PayPal, Paytm or UPI to unlock
                               </p>

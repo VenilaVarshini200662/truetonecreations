@@ -30,6 +30,8 @@ type ServiceRequest = {
   attachments: string[] | null;
   created_at: string;
   client_id: string;
+  payment_status: string;
+  price: number | null;
   profiles?: { full_name: string; email: string } | null;
 };
 
@@ -66,6 +68,8 @@ const AdminDashboard = () => {
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [filterStatus, setFilterStatus] = useState<string>("all");
+  const [priceInput, setPriceInput] = useState("");
+  const [markingPaid, setMarkingPaid] = useState(false);
 
   const fetchRequests = async () => {
     const { data, error } = await supabase
@@ -95,17 +99,20 @@ const AdminDashboard = () => {
     setSelectedRequest(req);
     setReplyText(req.admin_reply ?? "");
     setNewStatus(req.status);
+    setPriceInput(req.price != null ? String(req.price) : "");
   };
 
   const handleSave = async () => {
     if (!selectedRequest) return;
     setSaving(true);
 
+    const priceVal = priceInput.trim() ? parseFloat(priceInput) : null;
     const { error } = await supabase
       .from("service_requests")
       .update({
         status: newStatus,
         admin_reply: replyText.trim() || null,
+        price: priceVal,
       })
       .eq("id", selectedRequest.id);
 
@@ -157,10 +164,22 @@ const AdminDashboard = () => {
       return;
     }
 
-    // Store the file path (not a public URL) so we can generate signed URLs on demand
+    // Check if this is the client's first request (free trial)
+    const { count } = await supabase
+      .from("service_requests")
+      .select("id", { count: "exact", head: true })
+      .eq("client_id", selectedRequest.client_id);
+
+    const isFirstRequest = (count ?? 0) <= 1;
+    const paymentStatus = isFirstRequest ? "free_trial" : "pending";
+
     const { error: updateError } = await supabase
       .from("service_requests")
-      .update({ delivery_url: filePath, status: "delivered" as RequestStatus })
+      .update({
+        delivery_url: filePath,
+        status: "delivered" as RequestStatus,
+        payment_status: paymentStatus,
+      })
       .eq("id", selectedRequest.id);
 
     setUploading(false);
@@ -169,23 +188,65 @@ const AdminDashboard = () => {
       return;
     }
 
-    toast({ title: "Delivered!", description: "File uploaded and request marked as delivered." });
-
-    // Send delivery notification email
-    try {
-      const { error: emailError } = await supabase.functions.invoke("send-delivery-email", {
-        body: { requestId: selectedRequest.id, deliveryFilePath: filePath },
-      });
-      if (emailError) {
-        console.error("Email error:", emailError);
-        toast({ title: "Note", description: "Delivered but email notification failed.", variant: "destructive" });
-      } else {
-        toast({ title: "Email Sent!", description: "Client has been notified via email." });
+    if (isFirstRequest) {
+      toast({ title: "Delivered!", description: "First request — free trial! Client can download immediately." });
+      // Send email immediately for free trial
+      try {
+        const { error: emailError } = await supabase.functions.invoke("send-delivery-email", {
+          body: { requestId: selectedRequest.id, deliveryFilePath: filePath },
+        });
+        if (emailError) {
+          console.error("Email error:", emailError);
+          toast({ title: "Note", description: "Delivered but email notification failed.", variant: "destructive" });
+        } else {
+          toast({ title: "Email Sent!", description: "Client has been notified via email." });
+        }
+      } catch (emailErr) {
+        console.error("Email send error:", emailErr);
       }
-    } catch (emailErr) {
-      console.error("Email send error:", emailErr);
+    } else {
+      toast({ title: "Delivered!", description: "File uploaded. Client must complete payment to download." });
     }
 
+    setSelectedRequest(null);
+    fetchRequests();
+  };
+
+  const handleMarkPaid = async () => {
+    if (!selectedRequest) return;
+    setMarkingPaid(true);
+
+    const { error } = await supabase
+      .from("service_requests")
+      .update({ payment_status: "paid" })
+      .eq("id", selectedRequest.id);
+
+    if (error) {
+      toast({ title: "Error", description: "Failed to mark as paid.", variant: "destructive" });
+      setMarkingPaid(false);
+      return;
+    }
+
+    toast({ title: "Payment Confirmed!", description: "Client can now download the file." });
+
+    // Send delivery email after payment
+    if (selectedRequest.delivery_url) {
+      try {
+        const { error: emailError } = await supabase.functions.invoke("send-delivery-email", {
+          body: { requestId: selectedRequest.id, deliveryFilePath: selectedRequest.delivery_url },
+        });
+        if (emailError) {
+          console.error("Email error:", emailError);
+          toast({ title: "Note", description: "Payment confirmed but email notification failed.", variant: "destructive" });
+        } else {
+          toast({ title: "Email Sent!", description: "Client has been notified with download link." });
+        }
+      } catch (emailErr) {
+        console.error("Email send error:", emailErr);
+      }
+    }
+
+    setMarkingPaid(false);
     setSelectedRequest(null);
     fetchRequests();
   };
@@ -366,6 +427,52 @@ const AdminDashboard = () => {
                         </SelectContent>
                       </Select>
                     </div>
+
+                    {/* Price & Payment */}
+                    <div className="space-y-2">
+                      <Label>Price (₹)</Label>
+                      <Input
+                        type="number"
+                        min="0"
+                        step="1"
+                        value={priceInput}
+                        onChange={(e) => setPriceInput(e.target.value)}
+                        placeholder="Set price for this request"
+                        className="bg-card"
+                      />
+                    </div>
+
+                    {selectedRequest.delivery_url && selectedRequest.payment_status === "pending" && (
+                      <div className="space-y-2 p-3 rounded-xl border border-amber-200 bg-amber-50">
+                        <p className="text-sm font-medium text-amber-800">
+                          Payment Status: Pending
+                        </p>
+                        <p className="text-xs text-amber-600">
+                          Client cannot download yet. Mark as paid after receiving payment.
+                        </p>
+                        <Button
+                          onClick={handleMarkPaid}
+                          disabled={markingPaid}
+                          variant="default"
+                          size="sm"
+                          className="w-full"
+                        >
+                          {markingPaid ? "Processing..." : "✅ Mark as Paid & Send Email"}
+                        </Button>
+                      </div>
+                    )}
+
+                    {selectedRequest.payment_status === "free_trial" && (
+                      <div className="p-3 rounded-xl border border-green-200 bg-green-50">
+                        <p className="text-sm font-medium text-green-800">🎉 Free Trial — Client can download</p>
+                      </div>
+                    )}
+
+                    {selectedRequest.payment_status === "paid" && (
+                      <div className="p-3 rounded-xl border border-green-200 bg-green-50">
+                        <p className="text-sm font-medium text-green-800">✅ Payment Received — Client can download</p>
+                      </div>
+                    )}
 
                     <div className="space-y-2">
                       <Label>Reply to Client</Label>
