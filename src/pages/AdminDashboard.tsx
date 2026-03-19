@@ -333,18 +333,25 @@ const AdminDashboard = () => {
                             <Badge variant="secondary" className="text-xs">
                               {serviceLabels[req.service_type] ?? req.service_type}
                             </Badge>
-                            <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${status.color}`}>
-                              <StatusIcon className="w-3 h-3" />
-                              {status.label}
-                            </span>
-                          </div>
-                          <h3 className="font-serif text-lg font-bold text-foreground">{req.title}</h3>
-                          <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{req.description}</p>
-                          <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground flex-wrap">
-                            <span>Client: {req.profiles?.full_name ?? req.client_id.slice(0, 8)}</span>
-                            {req.profiles?.email && <span>Email: {req.profiles.email}</span>}
-                            <span>Submitted: {new Date(req.created_at).toLocaleDateString()}</span>
-                          </div>
+                             <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${status.color}`}>
+                               <StatusIcon className="w-3 h-3" />
+                               {status.label}
+                             </span>
+                             {req.is_first_request && (
+                               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20">
+                                 🎁 1st Request (Free Trial)
+                               </span>
+                             )}
+                           </div>
+                           <h3 className="font-serif text-lg font-bold text-foreground">{req.title}</h3>
+                           <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{req.description}</p>
+                           <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground flex-wrap">
+                             <span className="font-medium text-foreground">
+                               📧 {req.profiles?.email ?? "Email not available"}
+                             </span>
+                             <span>Client: {req.profiles?.full_name ?? req.client_id.slice(0, 8)}</span>
+                             <span>Submitted: {new Date(req.created_at).toLocaleDateString()}</span>
+                           </div>
                         </div>
                         <Button variant="outline" size="sm" className="gap-2 shrink-0">
                           <Eye className="w-4 h-4" /> Manage
