@@ -17,6 +17,7 @@ type ServiceRequest = {
   admin_reply: string | null;
   delivery_url: string | null;
   payment_status: string;
+  price: number | null;
   created_at: string;
 };
 
