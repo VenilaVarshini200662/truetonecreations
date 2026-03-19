@@ -106,11 +106,13 @@ const AdminDashboard = () => {
     if (!selectedRequest) return;
     setSaving(true);
 
+    const priceVal = priceInput.trim() ? parseFloat(priceInput) : null;
     const { error } = await supabase
       .from("service_requests")
       .update({
         status: newStatus,
         admin_reply: replyText.trim() || null,
+        price: priceVal,
       })
       .eq("id", selectedRequest.id);
 
