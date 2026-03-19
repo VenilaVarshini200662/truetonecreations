@@ -428,6 +428,52 @@ const AdminDashboard = () => {
                       </Select>
                     </div>
 
+                    {/* Price & Payment */}
+                    <div className="space-y-2">
+                      <Label>Price (₹)</Label>
+                      <Input
+                        type="number"
+                        min="0"
+                        step="1"
+                        value={priceInput}
+                        onChange={(e) => setPriceInput(e.target.value)}
+                        placeholder="Set price for this request"
+                        className="bg-card"
+                      />
+                    </div>
+
+                    {selectedRequest.delivery_url && selectedRequest.payment_status === "pending" && (
+                      <div className="space-y-2 p-3 rounded-xl border border-amber-200 bg-amber-50">
+                        <p className="text-sm font-medium text-amber-800">
+                          Payment Status: Pending
+                        </p>
+                        <p className="text-xs text-amber-600">
+                          Client cannot download yet. Mark as paid after receiving payment.
+                        </p>
+                        <Button
+                          onClick={handleMarkPaid}
+                          disabled={markingPaid}
+                          variant="default"
+                          size="sm"
+                          className="w-full"
+                        >
+                          {markingPaid ? "Processing..." : "✅ Mark as Paid & Send Email"}
+                        </Button>
+                      </div>
+                    )}
+
+                    {selectedRequest.payment_status === "free_trial" && (
+                      <div className="p-3 rounded-xl border border-green-200 bg-green-50">
+                        <p className="text-sm font-medium text-green-800">🎉 Free Trial — Client can download</p>
+                      </div>
+                    )}
+
+                    {selectedRequest.payment_status === "paid" && (
+                      <div className="p-3 rounded-xl border border-green-200 bg-green-50">
+                        <p className="text-sm font-medium text-green-800">✅ Payment Received — Client can download</p>
+                      </div>
+                    )}
+
                     <div className="space-y-2">
                       <Label>Reply to Client</Label>
                       <Textarea
