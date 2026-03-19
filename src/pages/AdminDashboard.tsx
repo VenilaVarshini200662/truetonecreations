@@ -212,6 +212,45 @@ const AdminDashboard = () => {
     fetchRequests();
   };
 
+  const handleMarkPaid = async () => {
+    if (!selectedRequest) return;
+    setMarkingPaid(true);
+
+    const { error } = await supabase
+      .from("service_requests")
+      .update({ payment_status: "paid" })
+      .eq("id", selectedRequest.id);
+
+    if (error) {
+      toast({ title: "Error", description: "Failed to mark as paid.", variant: "destructive" });
+      setMarkingPaid(false);
+      return;
+    }
+
+    toast({ title: "Payment Confirmed!", description: "Client can now download the file." });
+
+    // Send delivery email after payment
+    if (selectedRequest.delivery_url) {
+      try {
+        const { error: emailError } = await supabase.functions.invoke("send-delivery-email", {
+          body: { requestId: selectedRequest.id, deliveryFilePath: selectedRequest.delivery_url },
+        });
+        if (emailError) {
+          console.error("Email error:", emailError);
+          toast({ title: "Note", description: "Payment confirmed but email notification failed.", variant: "destructive" });
+        } else {
+          toast({ title: "Email Sent!", description: "Client has been notified with download link." });
+        }
+      } catch (emailErr) {
+        console.error("Email send error:", emailErr);
+      }
+    }
+
+    setMarkingPaid(false);
+    setSelectedRequest(null);
+    fetchRequests();
+  };
+
   const filtered = filterStatus === "all" ? requests : requests.filter((r) => r.status === filterStatus);
 
   return (
