@@ -30,6 +30,8 @@ type ServiceRequest = {
   attachments: string[] | null;
   created_at: string;
   client_id: string;
+  payment_status: string;
+  price: number | null;
   profiles?: { full_name: string; email: string } | null;
 };
 
