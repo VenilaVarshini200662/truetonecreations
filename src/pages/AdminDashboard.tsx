@@ -33,6 +33,7 @@ type ServiceRequest = {
   payment_status: string;
   price: number | null;
   profiles?: { full_name: string; email: string } | null;
+  is_first_request?: boolean;
 };
 
 const statusConfig: Record<string, { label: string; icon: typeof Clock; color: string }> = {
