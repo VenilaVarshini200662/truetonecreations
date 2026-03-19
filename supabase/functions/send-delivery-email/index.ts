@@ -71,10 +71,10 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Fetch the service request with client profile
+    // Fetch the service request
     const { data: request, error: reqError } = await supabaseAdmin
       .from("service_requests")
-      .select("*, profiles!service_requests_client_id_fkey(full_name, email)")
+      .select("*")
       .eq("id", requestId)
       .single();
 
@@ -88,8 +88,15 @@ Deno.serve(async (req) => {
       );
     }
 
-    const clientEmail = (request as any).profiles?.email;
-    const clientName = (request as any).profiles?.full_name || "Client";
+    // Fetch the client's profile separately
+    const { data: profile } = await supabaseAdmin
+      .from("profiles")
+      .select("full_name, email")
+      .eq("user_id", request.client_id)
+      .single();
+
+    const clientEmail = profile?.email;
+    const clientName = profile?.full_name || "Client";
 
     if (!clientEmail) {
       return new Response(
