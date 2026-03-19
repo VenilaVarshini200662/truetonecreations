@@ -99,6 +99,7 @@ const AdminDashboard = () => {
     setSelectedRequest(req);
     setReplyText(req.admin_reply ?? "");
     setNewStatus(req.status);
+    setPriceInput(req.price != null ? String(req.price) : "");
   };
 
   const handleSave = async () => {
