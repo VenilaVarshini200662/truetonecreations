@@ -164,10 +164,22 @@ const AdminDashboard = () => {
       return;
     }
 
-    // Store the file path (not a public URL) so we can generate signed URLs on demand
+    // Check if this is the client's first request (free trial)
+    const { count } = await supabase
+      .from("service_requests")
+      .select("id", { count: "exact", head: true })
+      .eq("client_id", selectedRequest.client_id);
+
+    const isFirstRequest = (count ?? 0) <= 1;
+    const paymentStatus = isFirstRequest ? "free_trial" : "pending";
+
     const { error: updateError } = await supabase
       .from("service_requests")
-      .update({ delivery_url: filePath, status: "delivered" as RequestStatus })
+      .update({
+        delivery_url: filePath,
+        status: "delivered" as RequestStatus,
+        payment_status: paymentStatus,
+      })
       .eq("id", selectedRequest.id);
 
     setUploading(false);
@@ -176,21 +188,24 @@ const AdminDashboard = () => {
       return;
     }
 
-    toast({ title: "Delivered!", description: "File uploaded and request marked as delivered." });
-
-    // Send delivery notification email
-    try {
-      const { error: emailError } = await supabase.functions.invoke("send-delivery-email", {
-        body: { requestId: selectedRequest.id, deliveryFilePath: filePath },
-      });
-      if (emailError) {
-        console.error("Email error:", emailError);
-        toast({ title: "Note", description: "Delivered but email notification failed.", variant: "destructive" });
-      } else {
-        toast({ title: "Email Sent!", description: "Client has been notified via email." });
+    if (isFirstRequest) {
+      toast({ title: "Delivered!", description: "First request — free trial! Client can download immediately." });
+      // Send email immediately for free trial
+      try {
+        const { error: emailError } = await supabase.functions.invoke("send-delivery-email", {
+          body: { requestId: selectedRequest.id, deliveryFilePath: filePath },
+        });
+        if (emailError) {
+          console.error("Email error:", emailError);
+          toast({ title: "Note", description: "Delivered but email notification failed.", variant: "destructive" });
+        } else {
+          toast({ title: "Email Sent!", description: "Client has been notified via email." });
+        }
+      } catch (emailErr) {
+        console.error("Email send error:", emailErr);
       }
-    } catch (emailErr) {
-      console.error("Email send error:", emailErr);
+    } else {
+      toast({ title: "Delivered!", description: "File uploaded. Client must complete payment to download." });
     }
 
     setSelectedRequest(null);
