@@ -68,6 +68,8 @@ const AdminDashboard = () => {
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [filterStatus, setFilterStatus] = useState<string>("all");
+  const [priceInput, setPriceInput] = useState("");
+  const [markingPaid, setMarkingPaid] = useState(false);
 
   const fetchRequests = async () => {
     const { data, error } = await supabase
