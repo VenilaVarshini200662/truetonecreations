@@ -33,6 +33,7 @@ type ServiceRequest = {
   payment_status: string;
   price: number | null;
   profiles?: { full_name: string; email: string } | null;
+  is_first_request?: boolean;
 };
 
 const statusConfig: Record<string, { label: string; icon: typeof Clock; color: string }> = {
@@ -77,16 +78,37 @@ const AdminDashboard = () => {
       .select("*, profiles!service_requests_client_id_fkey(full_name, email)")
       .order("created_at", { ascending: false });
 
+    let allRequests: ServiceRequest[];
     if (error) {
-      // Fallback: fetch without join if foreign key doesn't exist
       const { data: fallbackData } = await supabase
         .from("service_requests")
         .select("*")
         .order("created_at", { ascending: false });
-      setRequests((fallbackData as ServiceRequest[]) ?? []);
+      allRequests = (fallbackData as ServiceRequest[]) ?? [];
     } else {
-      setRequests((data as unknown as ServiceRequest[]) ?? []);
+      allRequests = (data as unknown as ServiceRequest[]) ?? [];
     }
+
+    // Count requests per client_id to determine first requests
+    const clientRequestCounts: Record<string, number> = {};
+    // Sort by created_at ascending to find earliest per client
+    const sorted = [...allRequests].sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+    const firstRequestIds = new Set<string>();
+    for (const req of sorted) {
+      if (!clientRequestCounts[req.client_id]) {
+        clientRequestCounts[req.client_id] = 0;
+        firstRequestIds.add(req.id);
+      }
+      clientRequestCounts[req.client_id]++;
+    }
+
+    // Tag each request
+    const tagged = allRequests.map((req) => ({
+      ...req,
+      is_first_request: firstRequestIds.has(req.id),
+    }));
+
+    setRequests(tagged);
     setLoading(false);
   };
 
@@ -311,18 +333,25 @@ const AdminDashboard = () => {
                             <Badge variant="secondary" className="text-xs">
                               {serviceLabels[req.service_type] ?? req.service_type}
                             </Badge>
-                            <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${status.color}`}>
-                              <StatusIcon className="w-3 h-3" />
-                              {status.label}
-                            </span>
-                          </div>
-                          <h3 className="font-serif text-lg font-bold text-foreground">{req.title}</h3>
-                          <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{req.description}</p>
-                          <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground flex-wrap">
-                            <span>Client: {req.profiles?.full_name ?? req.client_id.slice(0, 8)}</span>
-                            {req.profiles?.email && <span>Email: {req.profiles.email}</span>}
-                            <span>Submitted: {new Date(req.created_at).toLocaleDateString()}</span>
-                          </div>
+                             <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${status.color}`}>
+                               <StatusIcon className="w-3 h-3" />
+                               {status.label}
+                             </span>
+                             {req.is_first_request && (
+                               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20">
+                                 🎁 1st Request (Free Trial)
+                               </span>
+                             )}
+                           </div>
+                           <h3 className="font-serif text-lg font-bold text-foreground">{req.title}</h3>
+                           <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{req.description}</p>
+                           <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground flex-wrap">
+                             <span className="font-medium text-foreground">
+                               📧 {req.profiles?.email ?? "Email not available"}
+                             </span>
+                             <span>Client: {req.profiles?.full_name ?? req.client_id.slice(0, 8)}</span>
+                             <span>Submitted: {new Date(req.created_at).toLocaleDateString()}</span>
+                           </div>
                         </div>
                         <Button variant="outline" size="sm" className="gap-2 shrink-0">
                           <Eye className="w-4 h-4" /> Manage
