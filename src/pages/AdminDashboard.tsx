@@ -78,16 +78,37 @@ const AdminDashboard = () => {
       .select("*, profiles!service_requests_client_id_fkey(full_name, email)")
       .order("created_at", { ascending: false });
 
+    let allRequests: ServiceRequest[];
     if (error) {
-      // Fallback: fetch without join if foreign key doesn't exist
       const { data: fallbackData } = await supabase
         .from("service_requests")
         .select("*")
         .order("created_at", { ascending: false });
-      setRequests((fallbackData as ServiceRequest[]) ?? []);
+      allRequests = (fallbackData as ServiceRequest[]) ?? [];
     } else {
-      setRequests((data as unknown as ServiceRequest[]) ?? []);
+      allRequests = (data as unknown as ServiceRequest[]) ?? [];
     }
+
+    // Count requests per client_id to determine first requests
+    const clientRequestCounts: Record<string, number> = {};
+    // Sort by created_at ascending to find earliest per client
+    const sorted = [...allRequests].sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+    const firstRequestIds = new Set<string>();
+    for (const req of sorted) {
+      if (!clientRequestCounts[req.client_id]) {
+        clientRequestCounts[req.client_id] = 0;
+        firstRequestIds.add(req.id);
+      }
+      clientRequestCounts[req.client_id]++;
+    }
+
+    // Tag each request
+    const tagged = allRequests.map((req) => ({
+      ...req,
+      is_first_request: firstRequestIds.has(req.id),
+    }));
+
+    setRequests(tagged);
     setLoading(false);
   };
 
