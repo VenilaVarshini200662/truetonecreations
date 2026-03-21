@@ -1,5 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { SmtpClient } from "https://deno.land/x/smtp@v0.7.0/mod.ts";
+import nodemailer from "npm:nodemailer@6.9.10";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -15,24 +15,22 @@ async function sendGmail(to: string, subject: string, htmlBody: string) {
     throw new Error("Gmail credentials not configured");
   }
 
-  const client = new SmtpClient();
-
-  await client.connectTLS({
-    hostname: "smtp.gmail.com",
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
     port: 465,
-    username: gmailUser,
-    password: gmailAppPassword,
+    secure: true,
+    auth: {
+      user: gmailUser,
+      pass: gmailAppPassword,
+    },
   });
 
-  await client.send({
+  await transporter.sendMail({
     from: gmailUser,
     to: to,
     subject: subject,
-    content: "Please view this email in an HTML-capable client.",
     html: htmlBody,
   });
-
-  await client.close();
 }
 
 function buildEmailHtml(
